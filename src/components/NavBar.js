@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Popup from 'reactjs-popup';
 import "./NavBar.css";
+import 'reactjs-popup/dist/index.css';
 
 function NavBar() {
 
   // const token = localStorage.getItem("user-info");
   const [click, setClick] = useState(false);
+  const [popUp, setPopUp] = useState(false);
 
   const handleClick = () => setClick(!click);
   return (
     <>
+    {popUp? <Popup trigger={<button> Trigger</button>} position="right center">
+    <div>Popup content here !!</div>
+  </Popup> : ""}
       <nav className="navbar">
         <div className="nav-container">
           <Link exact to="/" className="nav-logo">
@@ -89,6 +95,18 @@ function NavBar() {
                     Login
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link
+                    exact
+                    to="/account"
+                    activeClassName="active"
+                    className="nav-links"
+                    onClick={handleClick}
+                  >
+                    My Account
+                  </Link>
+                </li>
+               
               </ul>
             {/* )} */}
           </ul>

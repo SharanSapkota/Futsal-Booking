@@ -6,6 +6,7 @@ import Booking from "./Pages/Booking/Booking";
 import SignUp from "./Pages/Auth/SignUp";
 import Login from "./Pages/Auth/Login";
 import Arena from "./Pages/Arena/Arena";
+import Account from "./components/Account/Account";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/arena" component={Arena} />
             <Route path="/signUp" component={SignUp} />
             <Route path="/login" component={Login} />
+            <Route path="/account" component={Account} />
           </Switch>
         </div>
         {/* <Footer /> */}

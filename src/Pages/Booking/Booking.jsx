@@ -9,8 +9,8 @@ import axios from "axios";
 
 function Booking() {
   const getUserId = localStorage.getItem('user_id')
-  console.log(getUserId)
   const [arenaData, setArenaData] = useState([]);
+  const [key, setKey] = useState(0);
   const [getValue, setValue] = useState({
     ground_id: "",
     BookedDate:"02/02/2021",
@@ -19,11 +19,9 @@ function Booking() {
 
   })
   if(getValue.BookedDate) {
-    console.log('abc')
     const dateObj = new Date(getValue.BookedDate)
   
 const computedDate = dateFormat(dateObj, 'mm/dd/yyyy');
-console.log(computedDate)
     
 // paddedShortDate    
 
@@ -39,15 +37,24 @@ console.log(computedDate)
           }
           fetchAllData()
   },[] );
-  console.log(arenaData);
+
 
   const [bookId,setBookId] = useState([]);
-
 const postId = (id) => {
-  console.log(id)
  axios.post("http://localhost:8080/api/v1/public/getbyFutsalid" , {"futsal_id":id})
-        .then((resp) => {
+        .then(async (resp) => {
+          if((resp.data.length) > 0 ){
+         const a = resp.data
+          const b = a[key].ground_id
+          console.log(b)
+          const stringed = b.toString()
+         
+         setValue({...getValue, "ground_id":  stringed})
+        
           setBookId(resp.data)
+        } else {
+          return 'no data'
+        }
         })
 
 }
@@ -55,19 +62,23 @@ console.log(getValue)
 const onChangeHandler2 = (e) => {
   const dateObj = new Date(e.target.value)
   const computedDate = dateFormat(dateObj, 'mm/dd/yyyy');
-console.log(computedDate)
 
   setValue({...getValue, [e.target.name]:computedDate})
 }
 const onChangeHandler = (e) => {
-  console.log(e.target.value)
-  setValue({...getValue, [e.target.name]: e.target.value})
   postId(e.target.value)
 }
 
 const onTimeChangeHandler = (e) => {
   setValue({...getValue, [e.target.name]: e.target.value})
 
+}
+const onChangeHandler1 =(e) => {
+  console.log(e.target.value)
+  setKey(e.target.value)
+  console.log(key)
+  console.log(bookId[key].ground_id)
+  setValue({...getValue, [getValue.ground_id]:bookId[key].ground_id})
 }
 
 const onSubmit =async() => {
@@ -82,14 +93,13 @@ const onSubmit =async() => {
         <Row className="mb-5">
           <Form.Group as={Col} controlId="formGridState">
             <h3>Select Arena</h3>
-            <Form.Select name="ground_id" value={getValue.ground_id} onChange = {(e) => onChangeHandler(e)}>
-
-              {arenaData.map((bookData) =>
+            <Form.Select value={getValue.ground_id} onChange = {(e) => onChangeHandler(e)}>
+              {arenaData.map((bookData) => 
                 <option value={bookData.id}>{bookData.name}</option>
               )}
-            </Form.Select>
+            </Form.Select >
             <h3>Select Ground</h3>
-            <Form.Select>
+            <Form.Select onChange = {(e) => onChangeHandler1(e)}>
               {bookId.map((groundId, key)=>
                   <option value={groundId.futsal_id}>{key+1}</option>
               )}
@@ -97,11 +107,7 @@ const onSubmit =async() => {
             <h3>Select Date</h3>
             
             <input type="date" name="BookedDate" onChange={(e) => onChangeHandler2(e)} placeholder="Select Date" />
-            {/* 
             
-            <input type="date" name="BookedDate" onChange={(e) => onChangeHandler2(e)} placeholder="Select Date" />
-         */}
-         
  <label for="cars"><h3>Select Time</h3></label>
 
  <select name="BookedTime" onChange={(e) => onTimeChangeHandler(e)} value={getValue.BookedTime} class="form-select" aria-label="Default select example">
@@ -130,13 +136,8 @@ const onSubmit =async() => {
   <option value="23">23</option>
   <option value="24">24</option>
 </select>
-
-
-
           </Form.Group>
-
         </Row>
-
         <Button onClick = {() => onSubmit()} variant="dark" style={{ margin: "10%" }}>
           Book Now
         </Button>

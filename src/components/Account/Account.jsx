@@ -1,19 +1,9 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios"
+import React from 'react'
 
-export const Card = (props) => {
-    useEffect( () => {
-      const getData = async () => {
-            await axios.get("http://localhost:8080/api/v1/public/findAll")
-            .then((response) => {
-                console.log(response);
-            });
-          }
-          getData()
-    },[] );
-  return (
-    <>
-      <div id="container">
+function Account() {
+    return (
+     <div>
+         <div id="container">
         <div class="product-details">
           <h1
             style={{
@@ -23,8 +13,7 @@ export const Card = (props) => {
               color: "black",
             }}
           >
-            {props.name}
-          </h1>
+value          </h1>
           <p
             style={{
               fontFamily: "Arvo",
@@ -33,15 +22,13 @@ export const Card = (props) => {
               marginBottom: "15px",
             }}
           >
-            {props.address}
-          </p>
+value          </p>
 
           <p
             style={{ fontFamily: "Arvo", fontSize: "14px", textAlign: "left" }}
             class="information"
           >
-            {props.description}
-          </p>
+value          </p>
         </div>
         <div class="arena-image">
           <img
@@ -50,8 +37,9 @@ export const Card = (props) => {
           />
         </div>
       </div>
-    </>
-  );
-};
+            This is account
+        </div>
+    )
+}
 
-export default Card;
+export default Account
