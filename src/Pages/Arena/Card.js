@@ -4,7 +4,7 @@ import axios from "axios"
 export const Card = (props) => {
     useEffect( () => {
       const getData = async () => {
-            await axios.get("http://localhost:8080/api/v1/public/findAll")
+            await axios.get("https://192.168.0.107:8080/api/v1/public/findAll")
             .then((response) => {
                 console.log(response);
             });
